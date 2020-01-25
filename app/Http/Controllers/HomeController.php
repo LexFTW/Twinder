@@ -12,13 +12,19 @@ class HomeController extends Controller{
 
     public function welcome(){
       $posts = Post::join('users', 'users.id', 'tw_posts.id_user')
-      ->select('users.nickname', 'users.name', 'tw_posts.*')->orderBy('tw_posts.id_post', 'desc')->get();
+      ->select('users.nickname', 'users.name', 'tw_posts.*')
+      ->orderBy('tw_posts.id_post', 'desc')
+      ->get();
+
       return view('welcome', compact('posts'));
     }
 
     public function index(){
       $posts = Post::join('users', 'users.id', 'tw_posts.id_user')
-      ->select('users.nickname', 'users.name', 'tw_posts.*')->orderBy('tw_posts.id_post', 'desc')->get();
+      ->select('users.nickname', 'users.name', 'tw_posts.*')
+      ->orderBy('tw_posts.id_post', 'desc')
+      ->get();
+
       return view('home', compact('posts'));
     }
 }

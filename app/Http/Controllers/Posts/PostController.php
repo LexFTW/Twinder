@@ -35,36 +35,92 @@ class PostController extends Controller{
     ]);
   }
 
+  public function hasLike(Request $request){
+      if(Like::where('id_post', $request->id_post)->where('id_user', Auth::id())->count() > 0){
+        return true;
+      }
+      return false;
+  }
+
+  public function hasRetwind(Request $request){
+      if(Retwind::where('id_post', $request->id_post)->where('id_user', Auth::id())->count() > 0){
+        return true;
+      }
+      return false;
+  }
+
   public function like(Request $request){
-    $like = new Like;
-    $like->id_post = $request->id_post;
-    $like->id_user = Auth::id();
-
-    $post = Post::find($request->id_post);
-    $post->likes += 1;
-
-    if($like->save()){
-      if($post->save()){
-        return redirect()->back();
-      }else{
-        $like->delete();
+    if(!$this->hasLike($request)){
+      $like = new Like;
+      $like->id_post = $request->id_post;
+      $like->id_user = Auth::id();
+      if($like->save()){
+        if($this->changeValueLikes($request, true)){
+          return redirect()->back();
+        }else{
+          $like->delete();
+        }
+      }
+    }else{
+      $like = Like::where('id_post', $request->id_post)->where('id_user', Auth::id());
+      if($like->delete()){
+        if($this->changeValueLikes($request, false)){
+          return redirect()->back();
+        }else{
+          $like->save();
+          return redirect()->back();
+        }
       }
     }
   }
 
-  public function retweet(Request $request){
-    $retwind = new Retwind;
-    $retwind->id_post = $request->id_post;
-    $retwind->id_user = Auth::id();
-
+  public function changeValueLikes(Request $request, $boolean){
     $post = Post::find($request->id_post);
-    $post->retwinds += 1;
+    if($boolean){
+      $post->likes += 1;
+    }else{
+      $post->likes -= 1;
+    }
+    if($post->save()){
+      return true;
+    }
+    return false;
+  }
 
-    if($retwind->save()){
-      if($post->save()){
-        return redirect()->back();
-      }else{
-        $retwind->delete();
+  public function changeValueRetwinds(Request $request, $boolean){
+    $post = Post::find($request->id_post);
+    if($boolean){
+      $post->retwinds += 1;
+    }else{
+      $post->retwinds -= 1;
+    }
+    if($post->save()){
+      return true;
+    }
+    return false;
+  }
+
+  public function retweet(Request $request){
+    if(!$this->hasRetwind($request)){
+      $retwind = new Retwind;
+      $retwind->id_post = $request->id_post;
+      $retwind->id_user = Auth::id();
+      if($retwind->save()){
+        if($this->changeValueRetwinds($request, true)){
+          return redirect()->back();
+        }else{
+          $like->delete();
+        }
+      }
+    }else{
+      $retwind = Retwind::where('id_post', $request->id_post)->where('id_user', Auth::id());
+      if($retwind->delete()){
+        if($this->changeValueRetwinds($request, false)){
+          return redirect()->back();
+        }else{
+          $retwind->save();
+          return redirect()->back();
+        }
       }
     }
   }

@@ -1,4 +1,4 @@
-<div class="media py-2 my-4 border-bottom">
+<div class="media py-2">
   <img class="mr-3 rounded-circle" style="width: 4em" src="https://www.w3schools.com/w3css/img_avatar3.png" alt="Generic placeholder image">
   <div class="media-body">
     <h6 class="d-inline mr-1"><b>{{$post->name}}</b></h6>
@@ -24,3 +24,4 @@
     @endauth
   </div>
 </div>
+<hr />

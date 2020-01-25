@@ -10,4 +10,4 @@
     </form>
   </div>
 </div>
-<hr class="my-0 py-0" style="border: 5px solid #ddd; margin-left: -20px; margin-right: -20px">
+<hr class="my-0 py-0 mb-2" style="border: 5px solid #ddd; margin-left: -20px; margin-right: -20px">
