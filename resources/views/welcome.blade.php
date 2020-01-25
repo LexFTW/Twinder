@@ -16,6 +16,9 @@
     <div class="col-md-6">
     @endguest
       <div class="card rounded-0">
+        <div class="card-header py-3 bg-transparent">
+          <h5 class="font-weight-bold text-uppercase my-0">Inicio</h5>
+        </div>
         <div class="card-body">
           @auth
             @include('posts.components.create')
